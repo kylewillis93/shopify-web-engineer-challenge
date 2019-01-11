@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <title>Shopify Coding Challenge</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="shopify.js"></script>
+	<style type="text/css">
+  .top-header {
+    text-align: center;
+    background-image: linear-gradient(to right,  #2a629e, #00994d);
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  .top-text {
+    color: white;
+    font-size: 45px;
+    font-family: "Helvetica Neue";
+  }
+  .flex-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+  }
+  .button-container {
+    padding-left: 10px;
+  }
+  .search-bar {
+    height: 45px;
+    font-size: 20px;
+    padding-left: 8px;
+    font-family: "Helvetica Neue";
+    flex:6;
+  }
+  .search-button {
+    height: 52px;
+    font-family: "Helvetica Neue";
+    /* flex: 1; */
+    padding-top: 5px;
+    width: 52px;
+    border-radius: 3px;
+    background-color: #00994d;
+  }
+  .results-container{
+    padding: 20px;
+    color: #3b3d3d;
+  }
+  .result-object{
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    font-family: "Helvetica Neue"; 
+    padding-bottom: 12px;
+  }
+  .star-icon{
+    align-self: "flex-start";
+    width: 25px;
+    height: 25px;
+
+
+  }
+  .result-ele0{
+    flex: 1;
+  }
+  .result-ele1{
+    flex:20;
+    padding-left: 10px;
+    padding-right: 30px;
+    padding-top: 1px;
+  }
+  .result-ele2{
+    padding-top: 1px;
+    flex:30;
+    padding-left: 5px;
+  }
+  .favorites{
+    background-color: #f4fff2;
+  }
+  .fav-title{
+    font-family: "Helvetica Neue";
+    font-size: 30px;
+    color: #00994d;
+  }
+  ul{
+    padding: 0px;
+    margin-top: 0px;
+  }
+  li{
+    padding-bottom: 15px;
+  }
+
+
+	</style>
+</head>
+<body>
+  <div class="top-header">
+  <h1 class="top-text">Toronto Waste Lookup</h1>
+  </div>
+  <div class="flex-container"> 
+  <input class="search-bar" type="text" placeholder="" id="query-input">
+  <div class="button-container">
+  <button class="search-button" onclick="searchTorontoWaste()" id="searchButton"><img src="./searchIcon.png"/></button> 
+  </div>
+  </div>
+
+  <div class="results-container" id="search-results">
+  </div>
+
+  <div class="favorites" id="fav-footer">
+  <h1 class="fav-title">Favourites</h1>
+  <div class="results-container" id="favorites">
+  </div>
+</div>
+
+</body>
+</html>
