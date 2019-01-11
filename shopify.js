@@ -2,9 +2,10 @@ let cachedData = [];
 let favorites = [];
 
 function getMatchingData(data, queryString) {
-  let matches = []
+  let matches = [];
   for (var key in data) {
     if (data.hasOwnProperty(key)) {
+           data[key].uuid = key.toString();
           if (data[key].title.toLowerCase().indexOf(queryString) !== -1) {
             matches = matches.concat(data[key]);
           } else if (data[key].keywords.toLowerCase().indexOf(queryString) !== -1) {
@@ -14,14 +15,13 @@ function getMatchingData(data, queryString) {
     }
     return matches;
 }
-//TODO remove favourite header when no favourites selected
-//remember favorites across querries?
+//TODO
+//remember favorites across querries? // use UUIDs for items not key
+//host on ec2 instance
 
-function addToFavorites(key){
-  if ($.inArray(key, favorites) === -1) {
-  console.log(document.getElementById(key));
+function addToFavorites(uuid){
+  if (favorites.indexOf(uuid.toString()) === -1) {
   if (favorites.length === 0) {
-    console.log('this executes');
     let div = document.createElement('div');
     let favBox = '<div class="favorites" id="fav-box">\
                   <h1 class="fav-title">Favourites</h1>\
@@ -31,40 +31,36 @@ function addToFavorites(key){
     div.innerHTML = div.innerHTML.concat(favBox);
     document.getElementById('fav-footer').appendChild(div);
   }
-  newFav = document.getElementById(key).cloneNode(true);
-  newFav.setAttribute("id", "fav"+key);
-  favorites = favorites.concat(key);
+  newFav = document.getElementById(uuid).cloneNode(true);
+  newFav.setAttribute("id", "fav"+uuid);
+  favorites = favorites.concat(uuid.toString());
   document.getElementById('favorites').append(newFav);
-  } else {
-    //document.getElementById('favorites').append(newFav);
-
   }
 }
 
-function removeFromFavorites(key){
-  let ele = document.getElementById("fav"+key);
+function removeFromFavorites(uuid){
+  let ele = document.getElementById("fav"+uuid);
   ele.parentNode.removeChild(ele);
-  let index = favorites.indexOf(key);
+  let index = favorites.indexOf(uuid.toString());
   if (index > -1) {
     favorites.splice(index, 1);
   }
   if (favorites.length === 0) {
-    console.log('removing favsss');
     let testElement = document.getElementById('fav-box');
     testElement.parentNode.removeChild(testElement);
   }
 }
 
-function changeImage(key) {
-  let srcString = document.getElementById("star"+key+"").src;
+function changeImage(uuid) {
+  let srcString = document.getElementById("star"+uuid+"").src;
   srcString = srcString.substr(srcString.length - 12);
   if (srcString === "greystar.png") {
-      document.getElementById("star"+key+"").src = "./greenstar.png";
-      addToFavorites(key);
+      document.getElementById("star"+uuid+"").src = "./greenstar.png";
+      addToFavorites(uuid);
   }
   else {
-      removeFromFavorites(key);
-      document.getElementById("star"+key+"").src = "./greystar.png";
+    document.getElementById("star"+uuid+"").src = "./greystar.png";  
+    removeFromFavorites(uuid);
   }
 }
 
@@ -77,12 +73,18 @@ function appendSearchResults(matches){
     testElement.parentNode.removeChild(testElement);
   }
   div.setAttribute("id", "dyno-results");
-  for (var key in matches) { 
-    let rowEle = "<div class='result-object' id="+key+">";
+  for (var key in matches) {
+    let starImg = "";
+    if (favorites.indexOf(matches[key].uuid) === -1) {
+      starImg = "./greystar.png";
+    } else {
+      starImg = "./greenstar.png";
+    }
+    let rowEle = "<div class='result-object' id="+matches[key].uuid+">";
     rowEle = rowEle.concat('<div class="result-ele0">\
-                            <img class="star-icon" id= "star'+key+'"\
-                             onclick="changeImage('+key+')"\
-                             src="greystar.png" />\
+                            <img class="star-icon" id= "star'+matches[key].uuid+'"\
+                             onclick="changeImage('+matches[key].uuid+')"\
+                             src='+starImg+' />\
                             </div>');
     rowEle = rowEle.concat('<div class="result-ele1">');
     rowEle = rowEle.concat('<text>'+matches[key].title+'</text>');
@@ -91,7 +93,6 @@ function appendSearchResults(matches){
     rowEle = rowEle.concat($("<p/>").html(matches[key].body).text());
     rowEle = rowEle.concat('</div>');
     rowEle = rowEle.concat("</div>");
-    console.log(rowEle);
     div.innerHTML = div.innerHTML.concat(rowEle);
   }
   document.getElementById('search-results').appendChild(div);
@@ -104,15 +105,12 @@ function searchTorontoWaste (){
       queryString = queryString.toLowerCase();
     if (cachedData.length === 0) {
     $.getJSON('https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=1000', function(data) {
-    console.log(data);
     cachedData = data;
      matches = getMatchingData(cachedData, queryString);
-     console.log(matches);
      appendSearchResults(matches);
     });
     } else {
       matches = getMatchingData(cachedData, queryString);
-      console.log(matches);
       appendSearchResults(matches);
     }
     }
