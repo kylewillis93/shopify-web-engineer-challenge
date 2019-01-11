@@ -20,10 +20,24 @@ function getMatchingData(data, queryString) {
 function addToFavorites(key){
   if ($.inArray(key, favorites) === -1) {
   console.log(document.getElementById(key));
+  if (favorites.length === 0) {
+    console.log('this executes');
+    let div = document.createElement('div');
+    let favBox = '<div id="fav-box">\
+                  <h1 class="fav-title">Favourites</h1>\
+                  <div class="results-container" id="favorites">\
+                   </div>\
+                  </div>';
+    div.innerHTML = div.innerHTML.concat(favBox);
+    document.getElementById('fav-footer').appendChild(div);
+  }
   newFav = document.getElementById(key).cloneNode(true);
   newFav.setAttribute("id", "fav"+key);
   favorites = favorites.concat(key);
   document.getElementById('favorites').append(newFav);
+  } else {
+    //document.getElementById('favorites').append(newFav);
+
   }
 }
 
@@ -33,6 +47,11 @@ function removeFromFavorites(key){
   let index = favorites.indexOf(key);
   if (index > -1) {
     favorites.splice(index, 1);
+  }
+  if (favorites.length === 0) {
+    console.log('removing favsss');
+    let testElement = document.getElementById('fav-box');
+    testElement.parentNode.removeChild(testElement);
   }
 }
 
