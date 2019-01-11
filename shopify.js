@@ -23,7 +23,7 @@ function addToFavorites(key){
   if (favorites.length === 0) {
     console.log('this executes');
     let div = document.createElement('div');
-    let favBox = '<div id="fav-box">\
+    let favBox = '<div class="favorites" id="fav-box">\
                   <h1 class="fav-title">Favourites</h1>\
                   <div class="results-container" id="favorites">\
                    </div>\
