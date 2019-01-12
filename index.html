@@ -23,7 +23,7 @@
     padding-top: 15px;
     display: flex;
     flex-direction: row;
-    align-content: center;
+    align-items: center;
   }
   .button-container {
     padding-left: 10px;
@@ -77,7 +77,7 @@
     padding-left: 5px;
   }
   .favorites{
-    background-color: #f4fff2;
+    background-color: #f7fcf7;
   }
   .fav-title{
     font-family: "Helvetica Neue";
@@ -112,20 +112,16 @@
   <div class="top-header">
   <h1 class="top-text">Toronto Waste Lookup</h1>
   </div>
-  <div class="flex-container"> 
-  <input class="search-bar" type="text" placeholder="" id="query-input">
+  <div class="flex-container">
+      <input class="search-bar" type="text" placeholder="" id="query-input">
   <div class="button-container">
   <button class="search-button" onclick="searchTorontoWaste()" id="searchButton"><img src="./searchIcon.png"/></button> 
   </div>
   </div>
-
   <div class="results-container" id="search-results">
   </div>
-
   <div id="fav-footer">
-
   </div>
 </div>
-
 </body>
 </html>
